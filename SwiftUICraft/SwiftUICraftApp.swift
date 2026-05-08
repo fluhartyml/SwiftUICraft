@@ -1,8 +1,6 @@
 //
 //  SwiftUICraftApp.swift
-//  SwiftUICraft
-//
-//  Created by Michael Fluharty on 5/2/26.
+//  SwiftUICraft (display name: Routines)
 //
 
 import SwiftUI
@@ -12,10 +10,11 @@ import SwiftData
 struct SwiftUICraftApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Subject.self,
+            ScheduledEvent.self,
+            LogEntry.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
@@ -26,7 +25,7 @@ struct SwiftUICraftApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

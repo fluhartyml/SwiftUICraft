@@ -1,8 +1,6 @@
 //
 //  ContentView.swift
-//  SwiftUICraft
-//
-//  Created by Michael Fluharty on 5/2/26.
+//  SwiftUICraft (display name: Routines)
 //
 
 import SwiftUI
@@ -10,52 +8,36 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var subjects: [Subject]
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        TabView {
+            TodayView()
+                .tabItem {
+                    Label("Today", systemImage: "tray.full.fill")
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+
+            HistoryView()
+                .tabItem {
+                    Label("History", systemImage: "clock.fill")
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+
+            SubjectsView()
+                .tabItem {
+                    Label("Subjects", systemImage: "person.2.fill")
                 }
-            }
-        } detail: {
-            Text("Select an item")
+
+            UnderTheHoodView()
+                .tabItem {
+                    Label("Under the Hood", systemImage: "wrench.and.screwdriver")
+                }
         }
+        .onAppear { seedDefaultSubject() }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+    private func seedDefaultSubject() {
+        guard subjects.isEmpty else { return }
+        let me = Subject(name: "Me", iconName: "person.crop.circle.fill", colorHex: "#3B82F6", sortOrder: 0)
+        modelContext.insert(me)
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
