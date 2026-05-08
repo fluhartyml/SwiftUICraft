@@ -17,19 +17,21 @@ struct SubjectsView: View {
         NavigationStack {
             List {
                 ForEach(subjects) { subject in
-                    HStack(spacing: 12) {
-                        Image(systemName: subject.iconName)
-                            .font(.system(size: 22))
-                            .foregroundStyle(.tint)
-                            .frame(width: 32)
-                        Text(subject.name)
-                            .font(.system(size: 18))
-                        Spacer()
-                        Text("\(subject.schedules.count) scheduled")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.secondary)
+                    NavigationLink {
+                        SubjectScheduleView(subject: subject)
+                    } label: {
+                        HStack(spacing: 12) {
+                            subject.badge(size: 36)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(subject.name)
+                                    .font(.system(size: 18))
+                                Text("\(subject.schedules.count) scheduled")
+                                    .font(.system(size: 14))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
                 .onDelete(perform: deleteSubjects)
             }
