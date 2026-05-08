@@ -14,6 +14,7 @@ struct TodayView: View {
 
     @State private var selectedSubject: Subject?
     @State private var showQuickLog = false
+    @State private var showAbout = false
 
     private let today = Date()
     private let calendar = Calendar.current
@@ -71,6 +72,13 @@ struct TodayView: View {
             }
             .navigationTitle("Today")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showAbout = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         showQuickLog = true
@@ -84,6 +92,9 @@ struct TodayView: View {
             }
             .sheet(isPresented: $showQuickLog) {
                 QuickLogSheet()
+            }
+            .sheet(isPresented: $showAbout) {
+                AboutView()
             }
         }
     }

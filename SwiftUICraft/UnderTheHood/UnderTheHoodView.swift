@@ -2,26 +2,50 @@
 //  UnderTheHoodView.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Phase 1 stub. Phase 9 fills it with the LockBox-pattern in-app source viewer
-//  driven by hand-authored UnderTheHoodContent.swift.
-//
 
 import SwiftUI
 
 struct UnderTheHoodView: View {
     var body: some View {
         NavigationStack {
-            VStack(spacing: 16) {
-                Image(systemName: "wrench.and.screwdriver")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.tint)
-                Text("Under the Hood")
-                    .font(.system(size: 28, weight: .bold))
-                Text("Phase 9 brings the in-app source viewer with the full file map and per-file callouts.")
-                    .font(.system(size: 18))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 30)
+            List {
+                Section {
+                    Text("Routines is a household routine tracker built as Build-Along 03 of Claudes X26 Swift6 Bible. The marquee teaching surface is custom ViewModifiers driven by user data — see the Modifiers/ folder.")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.secondary)
+                } header: {
+                    Text("About this code").font(.system(size: 16))
+                }
+
+                Section {
+                    ForEach(UnderTheHoodContent.mainAppFiles) { file in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(file.path)
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(file.description)
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.vertical, 2)
+                    }
+                } header: {
+                    Text("Main app target").font(.system(size: 16))
+                }
+
+                Section {
+                    ForEach(UnderTheHoodContent.widgetExtensionFiles) { file in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(file.path)
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(file.description)
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.vertical, 2)
+                    }
+                } header: {
+                    Text("Widget Extension target").font(.system(size: 16))
+                }
             }
             .navigationTitle("Under the Hood")
         }
