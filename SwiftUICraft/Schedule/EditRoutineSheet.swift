@@ -1,19 +1,19 @@
 //
-//  EditScheduledEventSheet.swift
+//  EditRoutineSheet.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Create or edit a ScheduledEvent.
+//  Create or edit a Routine.
 //
 
 import SwiftUI
 import SwiftData
 
-struct EditScheduledEventSheet: View {
+struct EditRoutineSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
     let subject: Subject
-    let editing: ScheduledEvent?
+    let editing: Routine?
 
     @State private var name = ""
     @State private var iconName = "circle.fill"
@@ -45,7 +45,7 @@ struct EditScheduledEventSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Event name (e.g. Breakfast, Morning meds)", text: $name)
+                    TextField("Routine name (e.g. Breakfast, Morning meds)", text: $name)
                         .font(.system(size: 18))
                 } header: { Text("Name").font(.system(size: 16)) }
 
@@ -147,7 +147,7 @@ struct EditScheduledEventSheet: View {
                         .font(.system(size: 16))
                 } header: { Text("Reminders").font(.system(size: 16)) }
             }
-            .navigationTitle(editing == nil ? "New Event" : "Edit Event")
+            .navigationTitle(editing == nil ? "New Routine" : "Edit Routine")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -162,17 +162,17 @@ struct EditScheduledEventSheet: View {
             .onAppear {
                 guard !hasLoaded else { return }
                 hasLoaded = true
-                if let event = editing {
-                    name = event.name
-                    iconName = event.iconName
-                    colorHex = event.colorHex
-                    time = Calendar.current.date(bySettingHour: event.hour, minute: event.minute, second: 0, of: Date()) ?? Date()
-                    kind = RecurrenceKind(rawValue: event.recurrenceKindRaw) ?? .daily
-                    weekdaysBitmask = event.recurrenceWeekdaysBitmask
-                    monthDay = event.recurrenceMonthDay
-                    oneOffDate = event.recurrenceOneOffDate ?? .now
-                    alarmEnabled = event.alarmEnabled
-                    notificationEnabled = event.notificationEnabled
+                if let routine = editing {
+                    name = routine.name
+                    iconName = routine.iconName
+                    colorHex = routine.colorHex
+                    time = Calendar.current.date(bySettingHour: routine.hour, minute: routine.minute, second: 0, of: Date()) ?? Date()
+                    kind = RecurrenceKind(rawValue: routine.recurrenceKindRaw) ?? .daily
+                    weekdaysBitmask = routine.recurrenceWeekdaysBitmask
+                    monthDay = routine.recurrenceMonthDay
+                    oneOffDate = routine.recurrenceOneOffDate ?? .now
+                    alarmEnabled = routine.alarmEnabled
+                    notificationEnabled = routine.notificationEnabled
                 }
             }
         }
@@ -185,22 +185,22 @@ struct EditScheduledEventSheet: View {
         let hour = comps.hour ?? 0
         let minute = comps.minute ?? 0
 
-        let savedEvent: ScheduledEvent
-        if let event = editing {
-            event.name = trimmed
-            event.iconName = iconName
-            event.colorHex = colorHex
-            event.hour = hour
-            event.minute = minute
-            event.recurrenceKindRaw = kind.rawValue
-            event.recurrenceWeekdaysBitmask = weekdaysBitmask
-            event.recurrenceMonthDay = monthDay
-            event.recurrenceOneOffDate = (kind == .oneOff) ? oneOffDate : nil
-            event.alarmEnabled = alarmEnabled
-            event.notificationEnabled = notificationEnabled
-            savedEvent = event
+        let savedRoutine: Routine
+        if let routine = editing {
+            routine.name = trimmed
+            routine.iconName = iconName
+            routine.colorHex = colorHex
+            routine.hour = hour
+            routine.minute = minute
+            routine.recurrenceKindRaw = kind.rawValue
+            routine.recurrenceWeekdaysBitmask = weekdaysBitmask
+            routine.recurrenceMonthDay = monthDay
+            routine.recurrenceOneOffDate = (kind == .oneOff) ? oneOffDate : nil
+            routine.alarmEnabled = alarmEnabled
+            routine.notificationEnabled = notificationEnabled
+            savedRoutine = routine
         } else {
-            let event = ScheduledEvent(
+            let routine = Routine(
                 subject: subject,
                 name: trimmed,
                 iconName: iconName,
@@ -214,19 +214,19 @@ struct EditScheduledEventSheet: View {
                 alarmEnabled: alarmEnabled,
                 notificationEnabled: notificationEnabled
             )
-            modelContext.insert(event)
-            savedEvent = event
+            modelContext.insert(routine)
+            savedRoutine = routine
         }
         Task {
-            if savedEvent.notificationEnabled {
-                await NotificationCoordinator.shared.schedule(event: savedEvent)
+            if savedRoutine.notificationEnabled {
+                await NotificationCoordinator.shared.schedule(routine: savedRoutine)
             } else {
-                await NotificationCoordinator.shared.remove(event: savedEvent)
+                await NotificationCoordinator.shared.remove(routine: savedRoutine)
             }
-            if savedEvent.alarmEnabled {
-                await AlarmCoordinator.shared.schedule(event: savedEvent)
+            if savedRoutine.alarmEnabled {
+                await AlarmCoordinator.shared.schedule(routine: savedRoutine)
             } else {
-                await AlarmCoordinator.shared.remove(event: savedEvent)
+                await AlarmCoordinator.shared.remove(routine: savedRoutine)
             }
         }
         dismiss()

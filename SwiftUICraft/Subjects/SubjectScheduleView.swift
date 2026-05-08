@@ -14,13 +14,13 @@ struct SubjectScheduleView: View {
     let subject: Subject
 
     @State private var showAdd = false
-    @State private var editing: ScheduledEvent?
+    @State private var editing: Routine?
 
     var body: some View {
         List {
             Section {
                 if subject.schedules.isEmpty {
-                    Text("No scheduled events. Tap + to add one.")
+                    Text("No scheduled routines. Tap + to add one.")
                         .font(.system(size: 16))
                         .foregroundStyle(.secondary)
                 } else {
@@ -67,23 +67,23 @@ struct SubjectScheduleView: View {
                 Button {
                     showAdd = true
                 } label: {
-                    Label("Add Event", systemImage: "plus")
+                    Label("Add Routine", systemImage: "plus")
                 }
             }
         }
         .sheet(isPresented: $showAdd) {
-            EditScheduledEventSheet(subject: subject, editing: nil)
+            EditRoutineSheet(subject: subject, editing: nil)
         }
         .sheet(item: $editing) { schedule in
-            EditScheduledEventSheet(subject: subject, editing: schedule)
+            EditRoutineSheet(subject: subject, editing: schedule)
         }
     }
 
-    private var sortedSchedules: [ScheduledEvent] {
+    private var sortedSchedules: [Routine] {
         subject.schedules.sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
-    private func recurrenceLabel(for schedule: ScheduledEvent) -> String {
+    private func recurrenceLabel(for schedule: Routine) -> String {
         guard let kind = RecurrenceKind(rawValue: schedule.recurrenceKindRaw) else { return "—" }
         switch kind {
         case .daily:    return "Daily"
@@ -105,8 +105,8 @@ struct SubjectScheduleView: View {
         let toDelete = offsets.map { sortedSchedules[$0] }
         for schedule in toDelete {
             Task {
-                await NotificationCoordinator.shared.remove(event: schedule)
-                await AlarmCoordinator.shared.remove(event: schedule)
+                await NotificationCoordinator.shared.remove(routine: schedule)
+                await AlarmCoordinator.shared.remove(routine: schedule)
             }
             modelContext.delete(schedule)
         }

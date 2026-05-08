@@ -2,12 +2,12 @@
 //  RecurrenceMatching.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Decides whether a ScheduledEvent applies to a given calendar day.
+//  Decides whether a Routine applies to a given calendar day.
 //
 
 import Foundation
 
-extension ScheduledEvent {
+extension Routine {
     /// True if this scheduled event should appear on the given day.
     func applies(on date: Date, calendar: Calendar = .current) -> Bool {
         guard let kind = RecurrenceKind(rawValue: recurrenceKindRaw) else { return false }

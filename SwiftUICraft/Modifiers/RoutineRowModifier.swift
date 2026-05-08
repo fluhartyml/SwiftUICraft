@@ -1,11 +1,11 @@
 //
-//  EventRowModifier.swift
+//  RoutineRowModifier.swift
 //  SwiftUICraft (display name: Routines)
 //
 
 import SwiftUI
 
-struct EventRowModifier: ViewModifier {
+struct RoutineRowModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(.vertical, 10)
@@ -17,7 +17,7 @@ struct EventRowModifier: ViewModifier {
 }
 
 extension View {
-    func eventRow() -> some View {
-        modifier(EventRowModifier())
+    func routineRow() -> some View {
+        modifier(RoutineRowModifier())
     }
 }

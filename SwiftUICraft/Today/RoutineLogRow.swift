@@ -1,5 +1,5 @@
 //
-//  EventLogRow.swift
+//  RoutineLogRow.swift
 //  SwiftUICraft (display name: Routines)
 //
 //  Single row inside SubjectMealsSheet: toggle, schedule time, done-at, notes, photo.
@@ -12,10 +12,10 @@ import PhotosUI
 import UIKit
 #endif
 
-struct EventLogRow: View {
+struct RoutineLogRow: View {
     @Environment(\.modelContext) private var modelContext
 
-    let schedule: ScheduledEvent
+    let schedule: Routine
     let subject: Subject
     let existingLog: LogEntry?
 
@@ -146,7 +146,7 @@ struct EventLogRow: View {
         if newValue {
             let log = LogEntry(
                 subject: subject,
-                sourceScheduleID: schedule.id,
+                sourceRoutineID: schedule.id,
                 name: schedule.name,
                 iconName: schedule.iconName,
                 colorHex: schedule.colorHex,

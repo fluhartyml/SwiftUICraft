@@ -2,7 +2,7 @@
 //  AlarmCoordinator.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Schedules AlarmKit prominent alarms matching a ScheduledEvent's recurrence.
+//  Schedules AlarmKit prominent alarms matching a Routine's recurrence.
 //
 //  AlarmKit's full configuration requires a StopIntent (AppIntent) so the
 //  alarm's Lock-Screen button can run app-side code on dismiss. That intent
@@ -47,13 +47,13 @@ final class AlarmCoordinator {
     }
 
     /// Bring the AlarmKit daemon's set of scheduled alarms in sync with
-    /// the ScheduledEvent rows that have alarmEnabled = true.
-    func reconcile(events: [ScheduledEvent]) async {
+    /// the Routine rows that have alarmEnabled = true.
+    func reconcile(routines: [Routine]) async {
         let granted = await requestAuthorizationIfNeeded()
         guard granted else { return }
 
         let validIDs = Set(
-            events
+            routines
                 .filter { $0.alarmEnabled }
                 .map { $0.id }
         )
@@ -67,27 +67,27 @@ final class AlarmCoordinator {
         }
 
         // Re-schedule the rest.
-        for event in events where event.alarmEnabled {
-            await schedule(event: event)
+        for routine in routines where routine.alarmEnabled {
+            await schedule(routine: routine)
         }
     }
 
-    func schedule(event: ScheduledEvent) async {
+    func schedule(routine: Routine) async {
         let granted = await requestAuthorizationIfNeeded()
         guard granted else { return }
 
         // Cancel any prior alarm for this event before re-scheduling.
-        try? await manager.cancel(id: event.id)
+        try? await manager.cancel(id: routine.id)
 
         // Phase 7 ships the auth + reconciliation flow; the full alarm
         // configuration with StopIntent lives in Phase 8 once the widget
         // extension target supplies the AppIntent. Until then, emit a
         // log line so behavior is observable without crashing.
-        print("[AlarmCoordinator] schedule pending Phase 8 wiring for \(event.name) (\(event.id))")
+        print("[AlarmCoordinator] schedule pending Phase 8 wiring for \(routine.name) (\(routine.id))")
     }
 
-    func remove(event: ScheduledEvent) async {
-        try? await manager.cancel(id: event.id)
+    func remove(routine: Routine) async {
+        try? await manager.cancel(id: routine.id)
     }
 }
 #else
@@ -97,8 +97,8 @@ final class AlarmCoordinator {
     static let shared = AlarmCoordinator()
     private init() {}
     func requestAuthorizationIfNeeded() async -> Bool { false }
-    func reconcile(events: [ScheduledEvent]) async {}
-    func schedule(event: ScheduledEvent) async {}
-    func remove(event: ScheduledEvent) async {}
+    func reconcile(routines: [Routine]) async {}
+    func schedule(routine: Routine) async {}
+    func remove(routine: Routine) async {}
 }
 #endif

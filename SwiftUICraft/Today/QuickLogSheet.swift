@@ -155,7 +155,7 @@ struct QuickLogSheet: View {
         guard !trimmed.isEmpty else { return }
         let log = LogEntry(
             subject: subject,
-            sourceScheduleID: nil,
+            sourceRoutineID: nil,
             name: trimmed,
             iconName: "circle.fill",
             colorHex: subject.colorHex,

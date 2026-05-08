@@ -69,7 +69,7 @@ struct HistoryView: View {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("Search event name", text: $nameSearch)
+                TextField("Search routine name", text: $nameSearch)
                     .font(.system(size: 16))
                     .textFieldStyle(.plain)
                 if !nameSearch.isEmpty {

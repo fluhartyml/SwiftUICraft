@@ -14,8 +14,8 @@ final class Subject {
     var colorHex: String
     var sortOrder: Int
 
-    @Relationship(deleteRule: .cascade, inverse: \ScheduledEvent.subject)
-    var schedules: [ScheduledEvent] = []
+    @Relationship(deleteRule: .cascade, inverse: \Routine.subject)
+    var schedules: [Routine] = []
 
     @Relationship(deleteRule: .cascade, inverse: \LogEntry.subject)
     var logs: [LogEntry] = []

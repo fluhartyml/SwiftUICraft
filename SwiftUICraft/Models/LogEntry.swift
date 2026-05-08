@@ -10,7 +10,7 @@ import SwiftData
 final class LogEntry {
     var id: UUID
     var subject: Subject?
-    var sourceScheduleID: UUID?
+    var sourceRoutineID: UUID?
 
     // Denormalized — survives schedule deletion
     var name: String
@@ -26,7 +26,7 @@ final class LogEntry {
     init(
         id: UUID = UUID(),
         subject: Subject?,
-        sourceScheduleID: UUID? = nil,
+        sourceRoutineID: UUID? = nil,
         name: String,
         iconName: String = "circle.fill",
         colorHex: String = "#3B82F6",
@@ -36,7 +36,7 @@ final class LogEntry {
     ) {
         self.id = id
         self.subject = subject
-        self.sourceScheduleID = sourceScheduleID
+        self.sourceRoutineID = sourceRoutineID
         self.name = name
         self.iconName = iconName
         self.colorHex = colorHex

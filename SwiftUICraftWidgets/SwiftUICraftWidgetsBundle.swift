@@ -13,7 +13,7 @@ import SwiftUI
 @main
 struct SwiftUICraftWidgetsBundle: WidgetBundle {
     var body: some Widget {
-        TodayEventsWidget()
+        TodayRoutinesWidget()
         SwiftUICraftWidgetsControl()
         RoutinesLiveActivity()
     }

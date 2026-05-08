@@ -15,13 +15,13 @@ import SwiftUI
 struct RoutinesActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var subjectName: String
-        var eventName: String
+        var routineName: String
         var iconName: String
         var colorHex: String
         var fireAt: Date
     }
 
-    var eventIDString: String
+    var routineIDString: String
 }
 
 struct RoutinesLiveActivity: Widget {
@@ -33,7 +33,7 @@ struct RoutinesLiveActivity: Widget {
                     .font(.title)
                     .foregroundStyle(Color(hex: context.state.colorHex))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(context.state.eventName)
+                    Text(context.state.routineName)
                         .font(.headline)
                     Text("\(context.state.subjectName) — fires at \(context.state.fireAt.formatted(date: .omitted, time: .shortened))")
                         .font(.caption)
@@ -58,7 +58,7 @@ struct RoutinesLiveActivity: Widget {
                         .font(.system(.body, design: .monospaced))
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    Text(context.state.eventName)
+                    Text(context.state.routineName)
                         .font(.headline)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
@@ -82,14 +82,14 @@ struct RoutinesLiveActivity: Widget {
 
 extension RoutinesActivityAttributes {
     fileprivate static var preview: RoutinesActivityAttributes {
-        RoutinesActivityAttributes(eventIDString: UUID().uuidString)
+        RoutinesActivityAttributes(routineIDString: UUID().uuidString)
     }
 }
 
 extension RoutinesActivityAttributes.ContentState {
     fileprivate static var sample: RoutinesActivityAttributes.ContentState {
         .init(subjectName: "Buddy",
-              eventName: "Breakfast",
+              routineName: "Breakfast",
               iconName: "fork.knife",
               colorHex: "#F59E0B",
               fireAt: Date(timeIntervalSinceNow: 600))

@@ -16,7 +16,7 @@ struct SubjectMealsSheet: View {
 
     let subject: Subject
 
-    @Query private var allSchedules: [ScheduledEvent]
+    @Query private var allSchedules: [Routine]
     @Query private var allLogs: [LogEntry]
 
     @State private var showAddSchedule = false
@@ -40,7 +40,7 @@ struct SubjectMealsSheet: View {
                             Button {
                                 showAddSchedule = true
                             } label: {
-                                Label("Schedule an event", systemImage: "plus.circle.fill")
+                                Label("Schedule a routine", systemImage: "plus.circle.fill")
                                     .font(.system(size: 18, weight: .semibold))
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 12)
@@ -55,7 +55,7 @@ struct SubjectMealsSheet: View {
                         .frame(maxWidth: .infinity)
                     } else {
                         ForEach(todays) { schedule in
-                            EventLogRow(
+                            RoutineLogRow(
                                 schedule: schedule,
                                 subject: subject,
                                 existingLog: logFor(schedule: schedule)
@@ -77,7 +77,7 @@ struct SubjectMealsSheet: View {
                     Button {
                         showAddSchedule = true
                     } label: {
-                        Label("Add Event", systemImage: "plus")
+                        Label("Add Routine", systemImage: "plus")
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
@@ -85,21 +85,21 @@ struct SubjectMealsSheet: View {
                 }
             }
             .sheet(isPresented: $showAddSchedule) {
-                EditScheduledEventSheet(subject: subject, editing: nil)
+                EditRoutineSheet(subject: subject, editing: nil)
             }
         }
     }
 
-    private var todaysSchedules: [ScheduledEvent] {
+    private var todaysSchedules: [Routine] {
         allSchedules
             .filter { $0.subject == subject && $0.applies(on: today, calendar: calendar) }
             .sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
-    private func logFor(schedule: ScheduledEvent) -> LogEntry? {
+    private func logFor(schedule: Routine) -> LogEntry? {
         allLogs.first { log in
             log.subject == subject
-            && log.sourceScheduleID == schedule.id
+            && log.sourceRoutineID == schedule.id
             && calendar.isDate(log.doneAt, inSameDayAs: today)
         }
     }

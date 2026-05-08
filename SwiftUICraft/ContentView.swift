@@ -10,7 +10,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @Query private var subjects: [Subject]
-    @Query private var allSchedules: [ScheduledEvent]
+    @Query private var allSchedules: [Routine]
 
     var body: some View {
         TabView {
@@ -37,15 +37,15 @@ struct ContentView: View {
         .onAppear {
             seedDefaultSubject()
             Task {
-                await NotificationCoordinator.shared.reconcile(events: allSchedules)
-                await AlarmCoordinator.shared.reconcile(events: allSchedules)
+                await NotificationCoordinator.shared.reconcile(routines: allSchedules)
+                await AlarmCoordinator.shared.reconcile(routines: allSchedules)
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 Task {
-                    await NotificationCoordinator.shared.reconcile(events: allSchedules)
-                    await AlarmCoordinator.shared.reconcile(events: allSchedules)
+                    await NotificationCoordinator.shared.reconcile(routines: allSchedules)
+                    await AlarmCoordinator.shared.reconcile(routines: allSchedules)
                 }
             }
         }

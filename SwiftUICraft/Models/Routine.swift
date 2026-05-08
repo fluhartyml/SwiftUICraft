@@ -1,5 +1,5 @@
 //
-//  ScheduledEvent.swift
+//  Routine.swift
 //  SwiftUICraft (display name: Routines)
 //
 
@@ -7,7 +7,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class ScheduledEvent {
+final class Routine {
     var id: UUID
     var subject: Subject?
     var name: String

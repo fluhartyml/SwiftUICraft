@@ -2,8 +2,8 @@
 //  NotificationCoordinator.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Schedules UNUserNotifications matching a ScheduledEvent's recurrence.
-//  One ScheduledEvent may produce multiple UNNotificationRequests
+//  Schedules UNUserNotifications matching a Routine's recurrence.
+//  One Routine may produce multiple UNNotificationRequests
 //  (one per applicable weekday for .weekdays / .weekends / .custom).
 //  Identifiers use the form "<eventID>-<index>" so we can remove an
 //  event's requests in bulk.
@@ -37,13 +37,13 @@ final class NotificationCoordinator {
         }
     }
 
-    func reconcile(events: [ScheduledEvent]) async {
+    func reconcile(routines: [Routine]) async {
         let pending = await center.pendingNotificationRequests()
         let pendingIDs = Set(pending.map(\.identifier))
 
         // Remove requests for events that no longer have notificationEnabled.
-        let validIDs = Set(events.compactMap { event in
-            event.notificationEnabled ? event.id.uuidString : nil
+        let validIDs = Set(routines.compactMap { routine in
+            routine.notificationEnabled ? routine.id.uuidString : nil
         })
         let toRemove = pendingIDs.filter { id in
             // request id format: "<eventUUID>-<n>"
@@ -56,32 +56,32 @@ final class NotificationCoordinator {
         }
 
         // Schedule fresh for events with notificationEnabled = true.
-        for event in events where event.notificationEnabled {
-            await schedule(event: event)
+        for routine in routines where routine.notificationEnabled {
+            await schedule(routine: routine)
         }
     }
 
-    func schedule(event: ScheduledEvent) async {
+    func schedule(routine: Routine) async {
         let granted = await requestAuthorizationIfNeeded()
         guard granted else { return }
 
         // Remove any existing requests for this event before scheduling fresh.
-        await remove(event: event)
+        await remove(routine: routine)
 
-        let kind = RecurrenceKind(rawValue: event.recurrenceKindRaw) ?? .daily
+        let kind = RecurrenceKind(rawValue: routine.recurrenceKindRaw) ?? .daily
         let triggers: [(suffix: String, trigger: UNNotificationTrigger)] = makeTriggers(
             kind: kind,
-            event: event
+            routine: routine
         )
 
         let content = UNMutableNotificationContent()
-        content.title = event.subject?.name ?? "Routines"
-        content.body = event.name
+        content.title = routine.subject?.name ?? "Routines"
+        content.body = routine.name
         content.sound = .default
 
         for (suffix, trigger) in triggers {
             let request = UNNotificationRequest(
-                identifier: "\(event.id.uuidString)-\(suffix)",
+                identifier: "\(routine.id.uuidString)-\(suffix)",
                 content: content,
                 trigger: trigger
             )
@@ -89,9 +89,9 @@ final class NotificationCoordinator {
         }
     }
 
-    func remove(event: ScheduledEvent) async {
+    func remove(routine: Routine) async {
         let pending = await center.pendingNotificationRequests()
-        let prefix = "\(event.id.uuidString)-"
+        let prefix = "\(routine.id.uuidString)-"
         let ids = pending.map(\.identifier).filter { $0.hasPrefix(prefix) }
         if !ids.isEmpty {
             center.removePendingNotificationRequests(withIdentifiers: ids)
@@ -100,43 +100,43 @@ final class NotificationCoordinator {
 
     // MARK: - Trigger builders
 
-    private func makeTriggers(kind: RecurrenceKind, event: ScheduledEvent) -> [(String, UNNotificationTrigger)] {
+    private func makeTriggers(kind: RecurrenceKind, routine: Routine) -> [(String, UNNotificationTrigger)] {
         switch kind {
         case .daily:
             var components = DateComponents()
-            components.hour = event.hour
-            components.minute = event.minute
+            components.hour = routine.hour
+            components.minute = routine.minute
             return [("daily", UNCalendarNotificationTrigger(dateMatching: components, repeats: true))]
         case .weekdays:
-            return weekdayTriggers(event: event, weekdays: 2...6)
+            return weekdayTriggers(routine: routine, weekdays: 2...6)
         case .weekends:
-            return weekdayTriggers(event: event, weekdays: [1, 7])
+            return weekdayTriggers(routine: routine, weekdays: [1, 7])
         case .custom:
             let days = Weekday.allCases
-                .filter { event.recurrenceWeekdaysBitmask.contains($0) }
+                .filter { routine.recurrenceWeekdaysBitmask.contains($0) }
                 .map { $0.rawValue }
-            return weekdayTriggers(event: event, weekdays: days)
+            return weekdayTriggers(routine: routine, weekdays: days)
         case .monthly:
             var components = DateComponents()
-            components.day = event.recurrenceMonthDay
-            components.hour = event.hour
-            components.minute = event.minute
+            components.day = routine.recurrenceMonthDay
+            components.hour = routine.hour
+            components.minute = routine.minute
             return [("monthly", UNCalendarNotificationTrigger(dateMatching: components, repeats: true))]
         case .oneOff:
-            guard let date = event.recurrenceOneOffDate else { return [] }
+            guard let date = routine.recurrenceOneOffDate else { return [] }
             var components = Calendar.current.dateComponents([.year, .month, .day], from: date)
-            components.hour = event.hour
-            components.minute = event.minute
+            components.hour = routine.hour
+            components.minute = routine.minute
             return [("oneOff", UNCalendarNotificationTrigger(dateMatching: components, repeats: false))]
         }
     }
 
-    private func weekdayTriggers<S: Sequence>(event: ScheduledEvent, weekdays: S) -> [(String, UNNotificationTrigger)] where S.Element == Int {
+    private func weekdayTriggers<S: Sequence>(routine: Routine, weekdays: S) -> [(String, UNNotificationTrigger)] where S.Element == Int {
         weekdays.map { weekday in
             var components = DateComponents()
             components.weekday = weekday
-            components.hour = event.hour
-            components.minute = event.minute
+            components.hour = routine.hour
+            components.minute = routine.minute
             let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
             return ("wk\(weekday)", trigger)
         }

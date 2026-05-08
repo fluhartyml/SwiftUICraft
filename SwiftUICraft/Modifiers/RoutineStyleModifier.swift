@@ -1,5 +1,5 @@
 //
-//  EventStyleModifier.swift
+//  RoutineStyleModifier.swift
 //  SwiftUICraft (display name: Routines)
 //
 //  Custom ViewModifier driven by user-chosen color + icon.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct EventStyleModifier: ViewModifier {
+struct RoutineStyleModifier: ViewModifier {
     let colorHex: String
     let iconName: String
 
@@ -25,7 +25,7 @@ struct EventStyleModifier: ViewModifier {
 
 extension View {
     /// Applies the event's chosen color + icon as a leading badge.
-    func eventStyle(colorHex: String, icon: String) -> some View {
-        modifier(EventStyleModifier(colorHex: colorHex, iconName: icon))
+    func routineStyle(colorHex: String, icon: String) -> some View {
+        modifier(RoutineStyleModifier(colorHex: colorHex, iconName: icon))
     }
 }

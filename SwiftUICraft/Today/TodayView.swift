@@ -9,7 +9,7 @@ import SwiftData
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Subject.sortOrder) private var subjects: [Subject]
-    @Query private var allSchedules: [ScheduledEvent]
+    @Query private var allSchedules: [Routine]
     @Query private var allLogs: [LogEntry]
 
     @State private var selectedSubject: Subject?
@@ -101,16 +101,16 @@ struct TodayView: View {
 
     // MARK: - Lookup
 
-    private func todaysSchedules(for subject: Subject) -> [ScheduledEvent] {
+    private func todaysSchedules(for subject: Subject) -> [Routine] {
         allSchedules
             .filter { $0.subject == subject && $0.applies(on: today, calendar: calendar) }
             .sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
-    private func logFor(schedule: ScheduledEvent, subject: Subject) -> LogEntry? {
+    private func logFor(schedule: Routine, subject: Subject) -> LogEntry? {
         allLogs.first { log in
             log.subject == subject
-            && log.sourceScheduleID == schedule.id
+            && log.sourceRoutineID == schedule.id
             && calendar.isDate(log.doneAt, inSameDayAs: today)
         }
     }
@@ -119,7 +119,7 @@ struct TodayView: View {
         allLogs
             .filter { log in
                 log.subject == subject
-                && log.sourceScheduleID == nil
+                && log.sourceRoutineID == nil
                 && calendar.isDate(log.doneAt, inSameDayAs: today)
             }
             .sorted { $0.doneAt < $1.doneAt }
@@ -127,7 +127,7 @@ struct TodayView: View {
 
     // MARK: - Row builders
 
-    private func rowSummary(for schedule: ScheduledEvent, subject: Subject) -> some View {
+    private func rowSummary(for schedule: Routine, subject: Subject) -> some View {
         let log = logFor(schedule: schedule, subject: subject)
         return HStack(spacing: 12) {
             Image(systemName: schedule.iconName)

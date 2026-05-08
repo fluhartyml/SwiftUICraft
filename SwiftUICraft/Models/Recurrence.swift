@@ -5,8 +5,8 @@
 
 import Foundation
 
-/// What kind of recurrence a ScheduledEvent uses.
-/// Stored as the `recurrenceKindRaw` field on ScheduledEvent.
+/// What kind of recurrence a Routine uses.
+/// Stored as the `recurrenceKindRaw` field on Routine.
 enum RecurrenceKind: String, CaseIterable, Codable {
     case daily
     case weekdays   // Mon–Fri

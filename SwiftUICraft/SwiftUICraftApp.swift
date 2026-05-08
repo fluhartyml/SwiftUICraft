@@ -11,7 +11,7 @@ struct SwiftUICraftApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Subject.self,
-            ScheduledEvent.self,
+            Routine.self,
             LogEntry.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
