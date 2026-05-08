@@ -46,7 +46,7 @@ struct TrackerMealsSheet: View {
                                     .padding(.vertical, 12)
                             }
                             .buttonStyle(.borderedProminent)
-                            Text("Set a recurring time (breakfast, meds, walk, BM, anything) or a one-off. Each event becomes a togglable row here.")
+                            Text("Set a recurring time (breakfast, meds, walk, ADL, anything) or a one-off. Each routine becomes a togglable row here.")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)

@@ -3,7 +3,7 @@
 //  SwiftUICraft (display name: Routines)
 //
 //  Ad-hoc "+ Log" path. No schedule needed.
-//  Use case: "had BM at 9:42 AM", "brushed teeth", "fed Buddy a treat".
+//  Use case: "logged an ADL at 9:42 AM", "brushed teeth", "fed Buddy a treat".
 //
 
 import SwiftUI
@@ -47,7 +47,7 @@ struct QuickLogSheet: View {
                 }
 
                 Section {
-                    TextField("Event (e.g. brushed teeth, BM, fed treat)", text: $name)
+                    TextField("Event (e.g. brushed teeth, ADL, fed treat)", text: $name)
                         .font(.system(size: 18))
                 } header: {
                     Text("What happened").font(.system(size: 16))
