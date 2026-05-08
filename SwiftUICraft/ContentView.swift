@@ -8,7 +8,9 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var subjects: [Subject]
+    @Query private var allSchedules: [ScheduledEvent]
 
     var body: some View {
         TabView {
@@ -32,7 +34,15 @@ struct ContentView: View {
                     Label("Under the Hood", systemImage: "wrench.and.screwdriver")
                 }
         }
-        .onAppear { seedDefaultSubject() }
+        .onAppear {
+            seedDefaultSubject()
+            Task { await NotificationCoordinator.shared.reconcile(events: allSchedules) }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                Task { await NotificationCoordinator.shared.reconcile(events: allSchedules) }
+            }
+        }
     }
 
     private func seedDefaultSubject() {

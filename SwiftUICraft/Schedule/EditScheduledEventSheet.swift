@@ -185,6 +185,7 @@ struct EditScheduledEventSheet: View {
         let hour = comps.hour ?? 0
         let minute = comps.minute ?? 0
 
+        let savedEvent: ScheduledEvent
         if let event = editing {
             event.name = trimmed
             event.iconName = iconName
@@ -197,6 +198,7 @@ struct EditScheduledEventSheet: View {
             event.recurrenceOneOffDate = (kind == .oneOff) ? oneOffDate : nil
             event.alarmEnabled = alarmEnabled
             event.notificationEnabled = notificationEnabled
+            savedEvent = event
         } else {
             let event = ScheduledEvent(
                 subject: subject,
@@ -213,6 +215,14 @@ struct EditScheduledEventSheet: View {
                 notificationEnabled: notificationEnabled
             )
             modelContext.insert(event)
+            savedEvent = event
+        }
+        Task {
+            if savedEvent.notificationEnabled {
+                await NotificationCoordinator.shared.schedule(event: savedEvent)
+            } else {
+                await NotificationCoordinator.shared.remove(event: savedEvent)
+            }
         }
         dismiss()
     }
