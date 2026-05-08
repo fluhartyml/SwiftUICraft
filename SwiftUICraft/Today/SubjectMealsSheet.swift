@@ -3,7 +3,8 @@
 //  SwiftUICraft (display name: Routines)
 //
 //  Per-subject sheet — variable N rows, one per scheduled event for today.
-//  Each row toggles fed/done with auto-stamped doneAt.
+//  Empty state surfaces an "Add scheduled event" CTA so the user has a
+//  clear next step from inside the sheet.
 //
 
 import SwiftUI
@@ -18,6 +19,8 @@ struct SubjectMealsSheet: View {
     @Query private var allSchedules: [ScheduledEvent]
     @Query private var allLogs: [LogEntry]
 
+    @State private var showAddSchedule = false
+
     private let today = Date()
     private let calendar = Calendar.current
 
@@ -27,9 +30,29 @@ struct SubjectMealsSheet: View {
                 Section {
                     let todays = todaysSchedules
                     if todays.isEmpty {
-                        Text("No scheduled events today. Add events on the Subjects tab.")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.secondary)
+                        VStack(spacing: 16) {
+                            Image(systemName: "calendar.badge.plus")
+                                .font(.system(size: 50))
+                                .foregroundStyle(.tint)
+                            Text("Nothing scheduled for \(subject.name) today.")
+                                .font(.system(size: 18))
+                                .multilineTextAlignment(.center)
+                            Button {
+                                showAddSchedule = true
+                            } label: {
+                                Label("Schedule an event", systemImage: "plus.circle.fill")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            Text("Set a recurring time (breakfast, meds, walk, BM, anything) or a one-off. Each event becomes a togglable row here.")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.vertical, 12)
+                        .frame(maxWidth: .infinity)
                     } else {
                         ForEach(todays) { schedule in
                             EventLogRow(
@@ -47,12 +70,22 @@ struct SubjectMealsSheet: View {
                     .padding(.bottom, 4)
                 }
             }
-            .navigationTitle("Today")
+            .navigationTitle(subject.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }.font(.system(size: 18, weight: .semibold))
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showAddSchedule = true
+                    } label: {
+                        Label("Add Event", systemImage: "plus")
+                    }
                 }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { dismiss() }.font(.system(size: 18))
+                }
+            }
+            .sheet(isPresented: $showAddSchedule) {
+                EditScheduledEventSheet(subject: subject, editing: nil)
             }
         }
     }
