@@ -8,6 +8,7 @@ import SwiftData
 
 @Model
 final class Subject {
+    var id: UUID
     var name: String
     var iconName: String
     var colorHex: String
@@ -19,7 +20,8 @@ final class Subject {
     @Relationship(deleteRule: .cascade, inverse: \LogEntry.subject)
     var logs: [LogEntry] = []
 
-    init(name: String, iconName: String = "person.fill", colorHex: String = "#3B82F6", sortOrder: Int = 0) {
+    init(id: UUID = UUID(), name: String, iconName: String = "person.fill", colorHex: String = "#3B82F6", sortOrder: Int = 0) {
+        self.id = id
         self.name = name
         self.iconName = iconName
         self.colorHex = colorHex

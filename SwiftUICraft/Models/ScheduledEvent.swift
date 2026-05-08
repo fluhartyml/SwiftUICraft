@@ -8,6 +8,7 @@ import SwiftData
 
 @Model
 final class ScheduledEvent {
+    var id: UUID
     var subject: Subject?
     var name: String
     var iconName: String
@@ -26,6 +27,7 @@ final class ScheduledEvent {
     var notificationEnabled: Bool
 
     init(
+        id: UUID = UUID(),
         subject: Subject?,
         name: String,
         iconName: String = "circle.fill",
@@ -39,6 +41,7 @@ final class ScheduledEvent {
         alarmEnabled: Bool = false,
         notificationEnabled: Bool = false
     ) {
+        self.id = id
         self.subject = subject
         self.name = name
         self.iconName = iconName

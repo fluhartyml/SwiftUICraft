@@ -8,6 +8,7 @@ import SwiftData
 
 @Model
 final class LogEntry {
+    var id: UUID
     var subject: Subject?
     var sourceScheduleID: UUID?
 
@@ -23,6 +24,7 @@ final class LogEntry {
     var photoData: Data?
 
     init(
+        id: UUID = UUID(),
         subject: Subject?,
         sourceScheduleID: UUID? = nil,
         name: String,
@@ -32,6 +34,7 @@ final class LogEntry {
         notes: String = "",
         photoData: Data? = nil
     ) {
+        self.id = id
         self.subject = subject
         self.sourceScheduleID = sourceScheduleID
         self.name = name
