@@ -8,6 +8,10 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct QuickLogSheet: View {
     @Environment(\.modelContext) private var modelContext
@@ -18,6 +22,11 @@ struct QuickLogSheet: View {
     @State private var name = ""
     @State private var doneAt: Date = .now
     @State private var notes = ""
+    @State private var photoData: Data?
+    @State private var photoPickerItem: PhotosPickerItem?
+    #if canImport(UIKit) && !targetEnvironment(macCatalyst)
+    @State private var showCamera = false
+    #endif
 
     var body: some View {
         NavigationStack {
@@ -52,6 +61,44 @@ struct QuickLogSheet: View {
                 }
 
                 Section {
+                    HStack(spacing: 14) {
+                        PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                            Label("Library", systemImage: "photo.on.rectangle")
+                                .font(.system(size: 14))
+                        }
+                        #if canImport(UIKit) && !targetEnvironment(macCatalyst)
+                        Button {
+                            showCamera = true
+                        } label: {
+                            Label("Camera", systemImage: "camera.fill")
+                                .font(.system(size: 14))
+                        }
+                        #endif
+                        Spacer()
+                    }
+                    .buttonStyle(.borderless)
+
+                    #if canImport(UIKit)
+                    if let data = photoData, let uiImage = UIImage(data: data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 120, height: 120)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .contextMenu {
+                                Button(role: .destructive) {
+                                    photoData = nil
+                                } label: {
+                                    Label("Remove photo", systemImage: "trash")
+                                }
+                            }
+                    }
+                    #endif
+                } header: {
+                    Text("Photo").font(.system(size: 16))
+                }
+
+                Section {
                     TextEditor(text: $notes)
                         .font(.system(size: 18))
                         .frame(minHeight: 80)
@@ -59,6 +106,24 @@ struct QuickLogSheet: View {
                     Text("Notes").font(.system(size: 16))
                 }
             }
+            .onChange(of: photoPickerItem) { _, item in
+                guard let item else { return }
+                Task {
+                    if let data = try? await item.loadTransferable(type: Data.self) {
+                        await MainActor.run {
+                            photoData = data
+                            photoPickerItem = nil
+                        }
+                    }
+                }
+            }
+            #if canImport(UIKit) && !targetEnvironment(macCatalyst)
+            .sheet(isPresented: $showCamera) {
+                CameraCaptureView { data in
+                    photoData = data
+                }
+            }
+            #endif
             .navigationTitle("Quick Log")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -95,7 +160,8 @@ struct QuickLogSheet: View {
             iconName: "circle.fill",
             colorHex: subject.colorHex,
             doneAt: doneAt,
-            notes: notes
+            notes: notes,
+            photoData: photoData
         )
         modelContext.insert(log)
         dismiss()
