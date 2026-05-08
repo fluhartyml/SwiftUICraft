@@ -1,8 +1,8 @@
 //
-//  SubjectMealsSheet.swift
+//  TrackerMealsSheet.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Per-subject sheet — variable N rows, one per scheduled event for today.
+//  Per-tracker sheet — variable N rows, one per scheduled event for today.
 //  Empty state surfaces an "Add scheduled event" CTA so the user has a
 //  clear next step from inside the sheet.
 //
@@ -10,11 +10,11 @@
 import SwiftUI
 import SwiftData
 
-struct SubjectMealsSheet: View {
+struct TrackerMealsSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let subject: Subject
+    let tracker: Tracker
 
     @Query private var allSchedules: [Routine]
     @Query private var allLogs: [LogEntry]
@@ -34,7 +34,7 @@ struct SubjectMealsSheet: View {
                             Image(systemName: "calendar.badge.plus")
                                 .font(.system(size: 50))
                                 .foregroundStyle(.tint)
-                            Text("Nothing scheduled for \(subject.name) today.")
+                            Text("Nothing scheduled for \(tracker.name) today.")
                                 .font(.system(size: 18))
                                 .multilineTextAlignment(.center)
                             Button {
@@ -57,20 +57,20 @@ struct SubjectMealsSheet: View {
                         ForEach(todays) { schedule in
                             RoutineLogRow(
                                 schedule: schedule,
-                                subject: subject,
+                                tracker: tracker,
                                 existingLog: logFor(schedule: schedule)
                             )
                         }
                     }
                 } header: {
                     HStack(spacing: 10) {
-                        subject.badge(size: 36)
-                        Text(subject.name).font(.system(size: 20, weight: .semibold))
+                        tracker.badge(size: 36)
+                        Text(tracker.name).font(.system(size: 20, weight: .semibold))
                     }
                     .padding(.bottom, 4)
                 }
             }
-            .navigationTitle(subject.name)
+            .navigationTitle(tracker.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -85,20 +85,20 @@ struct SubjectMealsSheet: View {
                 }
             }
             .sheet(isPresented: $showAddSchedule) {
-                EditRoutineSheet(subject: subject, editing: nil)
+                EditRoutineSheet(tracker: tracker, editing: nil)
             }
         }
     }
 
     private var todaysSchedules: [Routine] {
         allSchedules
-            .filter { $0.subject == subject && $0.applies(on: today, calendar: calendar) }
+            .filter { $0.tracker == tracker && $0.applies(on: today, calendar: calendar) }
             .sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
     private func logFor(schedule: Routine) -> LogEntry? {
         allLogs.first { log in
-            log.subject == subject
+            log.tracker == tracker
             && log.sourceRoutineID == schedule.id
             && calendar.isDate(log.doneAt, inSameDayAs: today)
         }

@@ -16,9 +16,9 @@ import UIKit
 struct QuickLogSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \Subject.sortOrder) private var subjects: [Subject]
+    @Query(sort: \Tracker.sortOrder) private var trackers: [Tracker]
 
-    @State private var selectedSubjectID: UUID?
+    @State private var selectedTrackerID: UUID?
     @State private var name = ""
     @State private var doneAt: Date = .now
     @State private var notes = ""
@@ -32,18 +32,18 @@ struct QuickLogSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Subject", selection: $selectedSubjectID) {
-                        ForEach(subjects) { subject in
+                    Picker("Tracker", selection: $selectedTrackerID) {
+                        ForEach(trackers) { tracker in
                             HStack {
-                                subject.badge(size: 24)
-                                Text(subject.name)
+                                tracker.badge(size: 24)
+                                Text(tracker.name)
                             }
-                            .tag(Optional(subject.id))
+                            .tag(Optional(tracker.id))
                         }
                     }
                     .font(.system(size: 18))
                 } header: {
-                    Text("Subject").font(.system(size: 16))
+                    Text("Tracker").font(.system(size: 16))
                 }
 
                 Section {
@@ -137,28 +137,28 @@ struct QuickLogSheet: View {
                 }
             }
             .onAppear {
-                if selectedSubjectID == nil {
-                    selectedSubjectID = subjects.first?.id
+                if selectedTrackerID == nil {
+                    selectedTrackerID = trackers.first?.id
                 }
             }
         }
     }
 
     private var saveDisabled: Bool {
-        name.trimmingCharacters(in: .whitespaces).isEmpty || selectedSubjectID == nil
+        name.trimmingCharacters(in: .whitespaces).isEmpty || selectedTrackerID == nil
     }
 
     private func save() {
-        guard let subjectID = selectedSubjectID,
-              let subject = subjects.first(where: { $0.id == subjectID }) else { return }
+        guard let trackerID = selectedTrackerID,
+              let tracker = trackers.first(where: { $0.id == trackerID }) else { return }
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         let log = LogEntry(
-            subject: subject,
+            tracker: tracker,
             sourceRoutineID: nil,
             name: trimmed,
             iconName: "circle.fill",
-            colorHex: subject.colorHex,
+            colorHex: tracker.colorHex,
             doneAt: doneAt,
             notes: notes,
             photoData: photoData

@@ -12,7 +12,7 @@ struct EditRoutineSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let subject: Subject
+    let tracker: Tracker
     let editing: Routine?
 
     @State private var name = ""
@@ -201,7 +201,7 @@ struct EditRoutineSheet: View {
             savedRoutine = routine
         } else {
             let routine = Routine(
-                subject: subject,
+                tracker: tracker,
                 name: trimmed,
                 iconName: iconName,
                 colorHex: colorHex,

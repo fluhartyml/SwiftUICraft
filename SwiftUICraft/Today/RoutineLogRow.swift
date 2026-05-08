@@ -2,7 +2,7 @@
 //  RoutineLogRow.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Single row inside SubjectMealsSheet: toggle, schedule time, done-at, notes, photo.
+//  Single row inside TrackerMealsSheet: toggle, schedule time, done-at, notes, photo.
 //
 
 import SwiftUI
@@ -16,7 +16,7 @@ struct RoutineLogRow: View {
     @Environment(\.modelContext) private var modelContext
 
     let schedule: Routine
-    let subject: Subject
+    let tracker: Tracker
     let existingLog: LogEntry?
 
     @State private var notes: String = ""
@@ -145,7 +145,7 @@ struct RoutineLogRow: View {
     private func toggleDone(to newValue: Bool) {
         if newValue {
             let log = LogEntry(
-                subject: subject,
+                tracker: tracker,
                 sourceRoutineID: schedule.id,
                 name: schedule.name,
                 iconName: schedule.iconName,

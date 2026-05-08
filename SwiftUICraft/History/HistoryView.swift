@@ -15,9 +15,9 @@ import UIKit
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \LogEntry.doneAt, order: .reverse) private var allLogs: [LogEntry]
-    @Query(sort: \Subject.sortOrder) private var subjects: [Subject]
+    @Query(sort: \Tracker.sortOrder) private var trackers: [Tracker]
 
-    @State private var subjectFilterID: UUID? = nil
+    @State private var trackerFilterID: UUID? = nil
     @State private var nameSearch: String = ""
     @State private var viewingPhoto: IdentifiablePhoto?
 
@@ -57,10 +57,10 @@ struct HistoryView: View {
 
     private var filterBar: some View {
         VStack(spacing: 8) {
-            Picker("Subject", selection: $subjectFilterID) {
-                Text("All Subjects").tag(UUID?.none)
-                ForEach(subjects) { subject in
-                    Text(subject.name).tag(Optional(subject.id))
+            Picker("Tracker", selection: $trackerFilterID) {
+                Text("All Trackers").tag(UUID?.none)
+                ForEach(trackers) { tracker in
+                    Text(tracker.name).tag(Optional(tracker.id))
                 }
             }
             .pickerStyle(.menu)
@@ -128,8 +128,8 @@ struct HistoryView: View {
                 Text(log.name)
                     .font(.system(size: 17, weight: .medium))
                 HStack(spacing: 6) {
-                    if let subject = log.subject {
-                        Text(subject.name)
+                    if let tracker = log.tracker {
+                        Text(tracker.name)
                             .font(.system(size: 13))
                             .foregroundStyle(.secondary)
                         Text("•").foregroundStyle(.tertiary)
@@ -155,7 +155,7 @@ struct HistoryView: View {
     private var filtered: [LogEntry] {
         let trimmed = nameSearch.trimmingCharacters(in: .whitespaces).lowercased()
         return allLogs.filter { log in
-            if let subjectID = subjectFilterID, log.subject?.id != subjectID { return false }
+            if let trackerID = trackerFilterID, log.tracker?.id != trackerID { return false }
             if !trimmed.isEmpty && !log.name.lowercased().contains(trimmed) { return false }
             return true
         }

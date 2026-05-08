@@ -1,11 +1,11 @@
 //
-//  SubjectBadgeModifier.swift
+//  TrackerBadgeModifier.swift
 //  SwiftUICraft (display name: Routines)
 //
 
 import SwiftUI
 
-struct SubjectBadgeView: View {
+struct TrackerBadgeView: View {
     let iconName: String
     let colorHex: String
     let size: CGFloat
@@ -22,9 +22,9 @@ struct SubjectBadgeView: View {
     }
 }
 
-extension Subject {
+extension Tracker {
     /// Visual badge for use in lists and headers.
     func badge(size: CGFloat = 36) -> some View {
-        SubjectBadgeView(iconName: iconName, colorHex: colorHex, size: size)
+        TrackerBadgeView(iconName: iconName, colorHex: colorHex, size: size)
     }
 }

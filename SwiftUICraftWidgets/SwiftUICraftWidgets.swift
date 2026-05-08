@@ -19,7 +19,7 @@ struct TodayEntry: TimelineEntry {
 
     struct UpcomingEvent: Hashable {
         let id: String
-        let subjectName: String
+        let trackerName: String
         let routineName: String
         let iconName: String
         let colorHex: String
@@ -47,13 +47,13 @@ struct TodayRoutinesProvider: AppIntentTimelineProvider {
 
     static let samplePlaceholder: [TodayEntry.UpcomingEvent] = [
         .init(id: UUID().uuidString,
-              subjectName: "Buddy",
+              trackerName: "Buddy",
               routineName: "Breakfast",
               iconName: "fork.knife",
               colorHex: "#F59E0B",
               scheduledAt: Date(timeIntervalSinceNow: 1800)),
         .init(id: UUID().uuidString,
-              subjectName: "Me",
+              trackerName: "Me",
               routineName: "Morning meds",
               iconName: "pills.fill",
               colorHex: "#3B82F6",
@@ -92,7 +92,7 @@ struct TodayRoutinesEntryView: View {
                             Text(routine.routineName)
                                 .font(.system(size: 13, weight: .semibold))
                                 .lineLimit(1)
-                            Text("\(routine.subjectName) • \(routine.scheduledAt.formatted(date: .omitted, time: .shortened))")
+                            Text("\(routine.trackerName) • \(routine.scheduledAt.formatted(date: .omitted, time: .shortened))")
                                 .font(.system(size: 11))
                                 .foregroundStyle(.secondary)
                                 .lineLimit(1)
@@ -114,7 +114,7 @@ struct TodayRoutinesEntryView: View {
         VStack(alignment: .leading, spacing: 2) {
             if let next = entry.upcoming.first {
                 Text(next.routineName).font(.headline)
-                Text("\(next.subjectName) • \(next.scheduledAt.formatted(date: .omitted, time: .shortened))")
+                Text("\(next.trackerName) • \(next.scheduledAt.formatted(date: .omitted, time: .shortened))")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             } else {

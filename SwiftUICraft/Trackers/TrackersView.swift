@@ -1,31 +1,31 @@
 //
-//  SubjectsView.swift
+//  TrackersView.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Phase 1 surface: list subjects + add new (basic). Phase 3 adds drill-into-schedule view.
+//  Phase 1 surface: list trackers + add new (basic). Phase 3 adds drill-into-schedule view.
 //
 
 import SwiftUI
 import SwiftData
 
-struct SubjectsView: View {
+struct TrackersView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Subject.sortOrder) private var subjects: [Subject]
-    @State private var showAddSubject = false
+    @Query(sort: \Tracker.sortOrder) private var trackers: [Tracker]
+    @State private var showAddTracker = false
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(subjects) { subject in
+                ForEach(trackers) { tracker in
                     NavigationLink {
-                        SubjectScheduleView(subject: subject)
+                        TrackerScheduleView(tracker: tracker)
                     } label: {
                         HStack(spacing: 12) {
-                            subject.badge(size: 36)
+                            tracker.badge(size: 36)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(subject.name)
+                                Text(tracker.name)
                                     .font(.system(size: 18))
-                                Text("\(subject.schedules.count) scheduled")
+                                Text("\(tracker.schedules.count) scheduled")
                                     .font(.system(size: 14))
                                     .foregroundStyle(.secondary)
                             }
@@ -33,36 +33,36 @@ struct SubjectsView: View {
                         .padding(.vertical, 4)
                     }
                 }
-                .onDelete(perform: deleteSubjects)
+                .onDelete(perform: deleteTrackers)
             }
-            .navigationTitle("Subjects")
+            .navigationTitle("Trackers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showAddSubject = true
+                        showAddTracker = true
                     } label: {
-                        Label("Add Subject", systemImage: "plus")
+                        Label("Add Tracker", systemImage: "plus")
                     }
                 }
             }
-            .sheet(isPresented: $showAddSubject) {
-                EditSubjectSheet()
+            .sheet(isPresented: $showAddTracker) {
+                EditTrackerSheet()
             }
             .overlay {
-                if subjects.isEmpty {
+                if trackers.isEmpty {
                     ContentUnavailableView(
-                        "No Subjects",
+                        "No Trackers",
                         systemImage: "person.2",
-                        description: Text("Add a subject to start logging.")
+                        description: Text("Add a tracker to start logging.")
                     )
                 }
             }
         }
     }
 
-    private func deleteSubjects(at offsets: IndexSet) {
+    private func deleteTrackers(at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(subjects[index])
+            modelContext.delete(trackers[index])
         }
     }
 }

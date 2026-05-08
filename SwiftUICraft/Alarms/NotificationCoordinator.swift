@@ -75,7 +75,7 @@ final class NotificationCoordinator {
         )
 
         let content = UNMutableNotificationContent()
-        content.title = routine.subject?.name ?? "Routines"
+        content.title = routine.tracker?.name ?? "Routines"
         content.body = routine.name
         content.sound = .default
 

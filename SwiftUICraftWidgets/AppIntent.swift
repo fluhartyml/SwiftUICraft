@@ -3,7 +3,7 @@
 //  SwiftUICraftWidgets (display name: Routines)
 //
 //  Two intents:
-//   1. ConfigurationAppIntent — widget config (which subject to show, etc.)
+//   1. ConfigurationAppIntent — widget config (which tracker to show, etc.)
 //   2. LogRoutineIntent — interactive widget tap-to-log without opening the app.
 //
 //  Phase 8 ships the intent shapes. The actual SwiftData write from inside the
@@ -17,8 +17,8 @@ import AppIntents
 import WidgetKit
 
 /// Configuration for the TodayRoutinesWidget — currently a thin shell; Phase 8.5
-/// adds a `Subject` enum parameter so a household with multiple subjects can
-/// show one subject per widget.
+/// adds a `Tracker` enum parameter so a household with multiple trackers can
+/// show one tracker per widget.
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Routines Configuration" }
     static var description: IntentDescription { "Pick what the widget shows." }

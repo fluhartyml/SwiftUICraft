@@ -10,7 +10,7 @@ import SwiftData
 struct SwiftUICraftApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Subject.self,
+            Tracker.self,
             Routine.self,
             LogEntry.self,
         ])

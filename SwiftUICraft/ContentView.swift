@@ -9,7 +9,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
-    @Query private var subjects: [Subject]
+    @Query private var trackers: [Tracker]
     @Query private var allSchedules: [Routine]
 
     var body: some View {
@@ -24,9 +24,9 @@ struct ContentView: View {
                     Label("History", systemImage: "clock.fill")
                 }
 
-            SubjectsView()
+            TrackersView()
                 .tabItem {
-                    Label("Subjects", systemImage: "person.2.fill")
+                    Label("Trackers", systemImage: "person.2.fill")
                 }
 
             UnderTheHoodView()
@@ -35,7 +35,7 @@ struct ContentView: View {
                 }
         }
         .onAppear {
-            seedDefaultSubject()
+            seedDefaultTracker()
             Task {
                 await NotificationCoordinator.shared.reconcile(routines: allSchedules)
                 await AlarmCoordinator.shared.reconcile(routines: allSchedules)
@@ -51,9 +51,9 @@ struct ContentView: View {
         }
     }
 
-    private func seedDefaultSubject() {
-        guard subjects.isEmpty else { return }
-        let me = Subject(name: "Me", iconName: "person.crop.circle.fill", colorHex: "#3B82F6", sortOrder: 0)
+    private func seedDefaultTracker() {
+        guard trackers.isEmpty else { return }
+        let me = Tracker(name: "Me", iconName: "person.crop.circle.fill", colorHex: "#3B82F6", sortOrder: 0)
         modelContext.insert(me)
     }
 }

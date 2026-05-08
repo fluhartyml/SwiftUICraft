@@ -9,7 +9,7 @@ import SwiftData
 @Model
 final class Routine {
     var id: UUID
-    var subject: Subject?
+    var tracker: Tracker?
     var name: String
     var iconName: String
     var colorHex: String
@@ -28,7 +28,7 @@ final class Routine {
 
     init(
         id: UUID = UUID(),
-        subject: Subject?,
+        tracker: Tracker?,
         name: String,
         iconName: String = "circle.fill",
         colorHex: String = "#3B82F6",
@@ -42,7 +42,7 @@ final class Routine {
         notificationEnabled: Bool = false
     ) {
         self.id = id
-        self.subject = subject
+        self.tracker = tracker
         self.name = name
         self.iconName = iconName
         self.colorHex = colorHex

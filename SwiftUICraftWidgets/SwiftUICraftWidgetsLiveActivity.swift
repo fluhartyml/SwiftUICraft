@@ -14,7 +14,7 @@ import SwiftUI
 
 struct RoutinesActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
-        var subjectName: String
+        var trackerName: String
         var routineName: String
         var iconName: String
         var colorHex: String
@@ -35,7 +35,7 @@ struct RoutinesLiveActivity: Widget {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(context.state.routineName)
                         .font(.headline)
-                    Text("\(context.state.subjectName) — fires at \(context.state.fireAt.formatted(date: .omitted, time: .shortened))")
+                    Text("\(context.state.trackerName) — fires at \(context.state.fireAt.formatted(date: .omitted, time: .shortened))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -62,7 +62,7 @@ struct RoutinesLiveActivity: Widget {
                         .font(.headline)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.state.subjectName)
+                    Text(context.state.trackerName)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -88,7 +88,7 @@ extension RoutinesActivityAttributes {
 
 extension RoutinesActivityAttributes.ContentState {
     fileprivate static var sample: RoutinesActivityAttributes.ContentState {
-        .init(subjectName: "Buddy",
+        .init(trackerName: "Buddy",
               routineName: "Breakfast",
               iconName: "fork.knife",
               colorHex: "#F59E0B",

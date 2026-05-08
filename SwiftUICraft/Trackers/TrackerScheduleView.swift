@@ -1,17 +1,17 @@
 //
-//  SubjectScheduleView.swift
+//  TrackerScheduleView.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Per-subject scheduled-events list. Add / edit / delete.
+//  Per-tracker scheduled-events list. Add / edit / delete.
 //
 
 import SwiftUI
 import SwiftData
 
-struct SubjectScheduleView: View {
+struct TrackerScheduleView: View {
     @Environment(\.modelContext) private var modelContext
 
-    let subject: Subject
+    let tracker: Tracker
 
     @State private var showAdd = false
     @State private var editing: Routine?
@@ -19,7 +19,7 @@ struct SubjectScheduleView: View {
     var body: some View {
         List {
             Section {
-                if subject.schedules.isEmpty {
+                if tracker.schedules.isEmpty {
                     Text("No scheduled routines. Tap + to add one.")
                         .font(.system(size: 16))
                         .foregroundStyle(.secondary)
@@ -54,8 +54,8 @@ struct SubjectScheduleView: View {
                 }
             } header: {
                 HStack(spacing: 10) {
-                    subject.badge(size: 32)
-                    Text(subject.name).font(.system(size: 20, weight: .semibold))
+                    tracker.badge(size: 32)
+                    Text(tracker.name).font(.system(size: 20, weight: .semibold))
                 }
                 .padding(.bottom, 4)
             }
@@ -72,15 +72,15 @@ struct SubjectScheduleView: View {
             }
         }
         .sheet(isPresented: $showAdd) {
-            EditRoutineSheet(subject: subject, editing: nil)
+            EditRoutineSheet(tracker: tracker, editing: nil)
         }
         .sheet(item: $editing) { schedule in
-            EditRoutineSheet(subject: subject, editing: schedule)
+            EditRoutineSheet(tracker: tracker, editing: schedule)
         }
     }
 
     private var sortedSchedules: [Routine] {
-        subject.schedules.sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
+        tracker.schedules.sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
     private func recurrenceLabel(for schedule: Routine) -> String {

@@ -8,11 +8,11 @@ import SwiftData
 
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Subject.sortOrder) private var subjects: [Subject]
+    @Query(sort: \Tracker.sortOrder) private var trackers: [Tracker]
     @Query private var allSchedules: [Routine]
     @Query private var allLogs: [LogEntry]
 
-    @State private var selectedSubject: Subject?
+    @State private var selectedTracker: Tracker?
     @State private var showQuickLog = false
     @State private var showAbout = false
 
@@ -22,27 +22,27 @@ struct TodayView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if subjects.isEmpty {
+                if trackers.isEmpty {
                     ContentUnavailableView(
-                        "No Subjects",
+                        "No Trackers",
                         systemImage: "person.2",
-                        description: Text("Add a subject on the Subjects tab to start logging events.")
+                        description: Text("Add a tracker on the Trackers tab to start logging events.")
                     )
                 } else {
                     List {
-                        ForEach(subjects) { subject in
+                        ForEach(trackers) { tracker in
                             Section {
-                                let todays = todaysSchedules(for: subject)
+                                let todays = todaysSchedules(for: tracker)
                                 if todays.isEmpty {
                                     Text("Nothing scheduled for today.")
                                         .font(.system(size: 16))
                                         .foregroundStyle(.secondary)
                                 } else {
                                     ForEach(todays) { schedule in
-                                        rowSummary(for: schedule, subject: subject)
+                                        rowSummary(for: schedule, tracker: tracker)
                                     }
                                 }
-                                let adHoc = todaysAdHocLogs(for: subject)
+                                let adHoc = todaysAdHocLogs(for: tracker)
                                 if !adHoc.isEmpty {
                                     ForEach(adHoc) { log in
                                         adHocSummary(for: log)
@@ -50,11 +50,11 @@ struct TodayView: View {
                                 }
                             } header: {
                                 Button {
-                                    selectedSubject = subject
+                                    selectedTracker = tracker
                                 } label: {
                                     HStack(spacing: 12) {
-                                        subject.badge(size: 32)
-                                        Text(subject.name)
+                                        tracker.badge(size: 32)
+                                        Text(tracker.name)
                                             .font(.system(size: 20, weight: .semibold))
                                             .foregroundStyle(.primary)
                                         Spacer()
@@ -87,8 +87,8 @@ struct TodayView: View {
                     }
                 }
             }
-            .sheet(item: $selectedSubject) { subject in
-                SubjectMealsSheet(subject: subject)
+            .sheet(item: $selectedTracker) { tracker in
+                TrackerMealsSheet(tracker: tracker)
             }
             .sheet(isPresented: $showQuickLog) {
                 QuickLogSheet()
@@ -101,24 +101,24 @@ struct TodayView: View {
 
     // MARK: - Lookup
 
-    private func todaysSchedules(for subject: Subject) -> [Routine] {
+    private func todaysSchedules(for tracker: Tracker) -> [Routine] {
         allSchedules
-            .filter { $0.subject == subject && $0.applies(on: today, calendar: calendar) }
+            .filter { $0.tracker == tracker && $0.applies(on: today, calendar: calendar) }
             .sorted { ($0.hour, $0.minute) < ($1.hour, $1.minute) }
     }
 
-    private func logFor(schedule: Routine, subject: Subject) -> LogEntry? {
+    private func logFor(schedule: Routine, tracker: Tracker) -> LogEntry? {
         allLogs.first { log in
-            log.subject == subject
+            log.tracker == tracker
             && log.sourceRoutineID == schedule.id
             && calendar.isDate(log.doneAt, inSameDayAs: today)
         }
     }
 
-    private func todaysAdHocLogs(for subject: Subject) -> [LogEntry] {
+    private func todaysAdHocLogs(for tracker: Tracker) -> [LogEntry] {
         allLogs
             .filter { log in
-                log.subject == subject
+                log.tracker == tracker
                 && log.sourceRoutineID == nil
                 && calendar.isDate(log.doneAt, inSameDayAs: today)
             }
@@ -127,8 +127,8 @@ struct TodayView: View {
 
     // MARK: - Row builders
 
-    private func rowSummary(for schedule: Routine, subject: Subject) -> some View {
-        let log = logFor(schedule: schedule, subject: subject)
+    private func rowSummary(for schedule: Routine, tracker: Tracker) -> some View {
+        let log = logFor(schedule: schedule, tracker: tracker)
         return HStack(spacing: 12) {
             Image(systemName: schedule.iconName)
                 .font(.system(size: 22, weight: .semibold))

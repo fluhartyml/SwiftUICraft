@@ -9,7 +9,7 @@ import SwiftData
 @Model
 final class LogEntry {
     var id: UUID
-    var subject: Subject?
+    var tracker: Tracker?
     var sourceRoutineID: UUID?
 
     // Denormalized — survives schedule deletion
@@ -25,7 +25,7 @@ final class LogEntry {
 
     init(
         id: UUID = UUID(),
-        subject: Subject?,
+        tracker: Tracker?,
         sourceRoutineID: UUID? = nil,
         name: String,
         iconName: String = "circle.fill",
@@ -35,7 +35,7 @@ final class LogEntry {
         photoData: Data? = nil
     ) {
         self.id = id
-        self.subject = subject
+        self.tracker = tracker
         self.sourceRoutineID = sourceRoutineID
         self.name = name
         self.iconName = iconName

@@ -2,7 +2,7 @@
 //  ColorHelpers.swift
 //  SwiftUICraft (display name: Routines)
 //
-//  Hex string ↔ SwiftUI Color. Stored as #RRGGBB on subjects and events.
+//  Hex string ↔ SwiftUI Color. Stored as #RRGGBB on trackers and events.
 //
 
 import SwiftUI
