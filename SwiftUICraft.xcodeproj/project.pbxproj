@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C0FBD6C42FAE3B1700B72A69 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0FBD6C32FAE3B1700B72A69 /* WidgetKit.framework */; };
+		C0FBD6C62FAE3B1700B72A69 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0FBD6C52FAE3B1700B72A69 /* SwiftUI.framework */; };
+		C0FBD6D72FAE3B1800B72A69 /* SwiftUICraftWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C0FBD6C12FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C0922D4E2FA6C8E4001C523C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +27,36 @@
 			remoteGlobalIDString = C0922D3B2FA6C8E3001C523C;
 			remoteInfo = SwiftUICraft;
 		};
+		C0FBD6D52FAE3B1800B72A69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0922D342FA6C8E3001C523C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0FBD6C02FAE3B1700B72A69;
+			remoteInfo = SwiftUICraftWidgetsExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C0FBD6D82FAE3B1800B72A69 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C0FBD6D72FAE3B1800B72A69 /* SwiftUICraftWidgetsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C0922D3C2FA6C8E3001C523C /* SwiftUICraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUICraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0922D4D2FA6C8E4001C523C /* SwiftUICraftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUICraftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0922D572FA6C8E4001C523C /* SwiftUICraftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUICraftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0FBD6C12FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SwiftUICraftWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0FBD6C32FAE3B1700B72A69 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C0FBD6C52FAE3B1700B72A69 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +66,13 @@
 				Info.plist,
 			);
 			target = C0922D3B2FA6C8E3001C523C /* SwiftUICraft */;
+		};
+		C0FBD6DC2FAE3B1800B72A69 /* Exceptions for "SwiftUICraftWidgets" folder in "SwiftUICraftWidgetsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C0FBD6C02FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -56,6 +93,14 @@
 		C0922D5A2FA6C8E4001C523C /* SwiftUICraftUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SwiftUICraftUITests;
+			sourceTree = "<group>";
+		};
+		C0FBD6C72FAE3B1700B72A69 /* SwiftUICraftWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C0FBD6DC2FAE3B1800B72A69 /* Exceptions for "SwiftUICraftWidgets" folder in "SwiftUICraftWidgetsExtension" target */,
+			);
+			path = SwiftUICraftWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -82,6 +127,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0FBD6BE2FAE3B1700B72A69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0FBD6C62FAE3B1700B72A69 /* SwiftUI.framework in Frameworks */,
+				C0FBD6C42FAE3B1700B72A69 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -91,6 +145,8 @@
 				C0922D3E2FA6C8E3001C523C /* SwiftUICraft */,
 				C0922D502FA6C8E4001C523C /* SwiftUICraftTests */,
 				C0922D5A2FA6C8E4001C523C /* SwiftUICraftUITests */,
+				C0FBD6C72FAE3B1700B72A69 /* SwiftUICraftWidgets */,
+				C0FBD6C22FAE3B1700B72A69 /* Frameworks */,
 				C0922D3D2FA6C8E3001C523C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,8 +157,18 @@
 				C0922D3C2FA6C8E3001C523C /* SwiftUICraft.app */,
 				C0922D4D2FA6C8E4001C523C /* SwiftUICraftTests.xctest */,
 				C0922D572FA6C8E4001C523C /* SwiftUICraftUITests.xctest */,
+				C0FBD6C12FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C0FBD6C22FAE3B1700B72A69 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C0FBD6C32FAE3B1700B72A69 /* WidgetKit.framework */,
+				C0FBD6C52FAE3B1700B72A69 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -115,10 +181,12 @@
 				C0922D382FA6C8E3001C523C /* Sources */,
 				C0922D392FA6C8E3001C523C /* Frameworks */,
 				C0922D3A2FA6C8E3001C523C /* Resources */,
+				C0FBD6D82FAE3B1800B72A69 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C0FBD6D62FAE3B1800B72A69 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C0922D3E2FA6C8E3001C523C /* SwiftUICraft */,
@@ -176,6 +244,28 @@
 			productReference = C0922D572FA6C8E4001C523C /* SwiftUICraftUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C0FBD6C02FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0FBD6DB2FAE3B1800B72A69 /* Build configuration list for PBXNativeTarget "SwiftUICraftWidgetsExtension" */;
+			buildPhases = (
+				C0FBD6BD2FAE3B1700B72A69 /* Sources */,
+				C0FBD6BE2FAE3B1700B72A69 /* Frameworks */,
+				C0FBD6BF2FAE3B1700B72A69 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C0FBD6C72FAE3B1700B72A69 /* SwiftUICraftWidgets */,
+			);
+			name = SwiftUICraftWidgetsExtension;
+			packageProductDependencies = (
+			);
+			productName = SwiftUICraftWidgetsExtension;
+			productReference = C0FBD6C12FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -197,6 +287,9 @@
 						CreatedOnToolsVersion = 26.4;
 						TestTargetID = C0922D3B2FA6C8E3001C523C;
 					};
+					C0FBD6C02FAE3B1700B72A69 = {
+						CreatedOnToolsVersion = 26.4;
+					};
 				};
 			};
 			buildConfigurationList = C0922D372FA6C8E3001C523C /* Build configuration list for PBXProject "SwiftUICraft" */;
@@ -216,6 +309,7 @@
 				C0922D3B2FA6C8E3001C523C /* SwiftUICraft */,
 				C0922D4C2FA6C8E4001C523C /* SwiftUICraftTests */,
 				C0922D562FA6C8E4001C523C /* SwiftUICraftUITests */,
+				C0FBD6C02FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -236,6 +330,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C0922D552FA6C8E4001C523C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0FBD6BF2FAE3B1700B72A69 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,6 +367,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0FBD6BD2FAE3B1700B72A69 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -278,6 +386,11 @@
 			isa = PBXTargetDependency;
 			target = C0922D3B2FA6C8E3001C523C /* SwiftUICraft */;
 			targetProxy = C0922D582FA6C8E4001C523C /* PBXContainerItemProxy */;
+		};
+		C0FBD6D62FAE3B1800B72A69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0FBD6C02FAE3B1700B72A69 /* SwiftUICraftWidgetsExtension */;
+			targetProxy = C0FBD6D52FAE3B1800B72A69 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -555,6 +668,66 @@
 			};
 			name = Release;
 		};
+		C0FBD6D92FAE3B1800B72A69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3X3F6UJ44H;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftUICraftWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftUICraftWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Claudes-X26-Swift-Bible.SwiftUICraft.SwiftUICraftWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C0FBD6DA2FAE3B1800B72A69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3X3F6UJ44H;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftUICraftWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftUICraftWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Claudes-X26-Swift-Bible.SwiftUICraft.SwiftUICraftWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -590,6 +763,15 @@
 			buildConfigurations = (
 				C0922D692FA6C8E4001C523C /* Debug */,
 				C0922D6A2FA6C8E4001C523C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0FBD6DB2FAE3B1800B72A69 /* Build configuration list for PBXNativeTarget "SwiftUICraftWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0FBD6D92FAE3B1800B72A69 /* Debug */,
+				C0FBD6DA2FAE3B1800B72A69 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
