@@ -223,6 +223,11 @@ struct EditScheduledEventSheet: View {
             } else {
                 await NotificationCoordinator.shared.remove(event: savedEvent)
             }
+            if savedEvent.alarmEnabled {
+                await AlarmCoordinator.shared.schedule(event: savedEvent)
+            } else {
+                await AlarmCoordinator.shared.remove(event: savedEvent)
+            }
         }
         dismiss()
     }

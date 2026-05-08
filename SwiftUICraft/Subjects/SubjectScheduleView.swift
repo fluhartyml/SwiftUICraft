@@ -104,7 +104,10 @@ struct SubjectScheduleView: View {
     private func deleteSchedules(at offsets: IndexSet) {
         let toDelete = offsets.map { sortedSchedules[$0] }
         for schedule in toDelete {
-            Task { await NotificationCoordinator.shared.remove(event: schedule) }
+            Task {
+                await NotificationCoordinator.shared.remove(event: schedule)
+                await AlarmCoordinator.shared.remove(event: schedule)
+            }
             modelContext.delete(schedule)
         }
     }

@@ -36,11 +36,17 @@ struct ContentView: View {
         }
         .onAppear {
             seedDefaultSubject()
-            Task { await NotificationCoordinator.shared.reconcile(events: allSchedules) }
+            Task {
+                await NotificationCoordinator.shared.reconcile(events: allSchedules)
+                await AlarmCoordinator.shared.reconcile(events: allSchedules)
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                Task { await NotificationCoordinator.shared.reconcile(events: allSchedules) }
+                Task {
+                    await NotificationCoordinator.shared.reconcile(events: allSchedules)
+                    await AlarmCoordinator.shared.reconcile(events: allSchedules)
+                }
             }
         }
     }
