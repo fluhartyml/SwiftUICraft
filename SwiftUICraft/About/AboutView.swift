@@ -21,7 +21,7 @@ struct AboutView: View {
                     Text("Routines")
                         .font(.system(size: 32, weight: .bold))
 
-                    Text("Track whether you fed the dog, took the kids to the pool, or any other routine that matters in your household.")
+                    Text("Track whether you fed the dog, took your medications, or any other routine that matters in your household.")
                         .font(.system(size: 18))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
